@@ -1,4 +1,6 @@
 from datetime import datetime
+import joblib
+import pickle
 import numpy as np
 import pandas as pd
 from sklearn.calibration import LabelEncoder
@@ -12,7 +14,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-from keras.models import save_model
+from tensorflow.keras.models import save_model
 
 from scikeras.wrappers import KerasRegressor
 
@@ -92,7 +94,7 @@ class MlSandbox:
         # Create the pipeline
         model = Pipeline([
             ('preprocess', preprocessor),
-            ('regressor', KerasRegressor(model=createModel, epochs=epochs, batch_size=batch_size))
+            ('regressor', KerasRegressor(model=createModel(), epochs=epochs, batch_size=batch_size))
         ])
         
         # Fit the model
@@ -106,10 +108,9 @@ class MlSandbox:
         print(f"Mean Squared Error: {mse:.2f}")
 
         # Save the model weights
-        # timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        # save_model(model.named_steps['regressor'],f'model_weights_{timestamp}.keras')
-        # model.named_steps[""]
-        # print("Model weights saved to", f'model_weights_{timestamp}.keras')
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        model.named_steps['regressor'].model.save(f'model_weights_{timestamp}.keras')
+        print("Model weights saved to", f'model_weights_{timestamp}.keras')
 
     def __createPreprocessor(self):
         categorical_transformer = OneHotEncoder()
