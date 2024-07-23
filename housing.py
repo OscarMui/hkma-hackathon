@@ -8,4 +8,6 @@ sb = MlSandbox("data/housing.csv",
                objective="CRIM", 
                objective_type="regression")
 
-sb.linearRegression()
+# sb.linearRegression()
+
+sb.neuralNetwork(epochs=100)
