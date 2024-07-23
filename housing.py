@@ -1,13 +1,13 @@
 from mlSandbox import MlSandbox
 
 sb = MlSandbox("data/housing.csv", 
-               numerical=["CHAS","ZN","INDUS","NOX","RM","AGE","DIS","RAD","TAX","PTRATIO","B","LSTAT","UNK"], 
+               numerical=["CRIM","CHAS","ZN","INDUS","NOX","RM","AGE","DIS","RAD","TAX","PTRATIO","B","LSTAT"], 
                numerical_log=[], 
                one_hot=[],
                boolean=[], 
-               objective="CRIM", 
+               objective="MEDV", 
                objective_type="regression")
 
 # sb.linearRegression()
 
-sb.neuralNetwork(epochs=100)
+sb.neuralNetwork(epochs=300)

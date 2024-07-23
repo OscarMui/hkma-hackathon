@@ -1,3 +1,4 @@
+import datetime
 import numpy as np
 import pandas as pd
 from sklearn.calibration import LabelEncoder
@@ -8,12 +9,12 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import FunctionTransformer, Pipeline
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.base import BaseEstimator, TransformerMixin
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 
+from scikeras.wrappers import KerasRegressor
 
 class MlSandbox:
     def __init__(self, file_name, numerical=[], numerical_log=[], one_hot=[], boolean=[], objective=None, objective_type="regression"):
@@ -69,7 +70,7 @@ class MlSandbox:
         mse = mean_squared_error(y_test, test_predictions)
         print(f"Mean Squared Error: {mse:.2f}")
 
-    def neuralNetwork(self,epochs=10, batch_size=32, test_size=0.2, random_state=42):
+    def neuralNetwork(self,epochs=100, batch_size=32, optimizer='adam',loss='mean_squared_error', test_size=0.2, random_state=42):
         # Load the data
         df = pd.read_csv(self.file_name)
         
@@ -82,11 +83,20 @@ class MlSandbox:
         
         # Define the preprocessing steps
         preprocessor = self.__createPreprocessor()
-    
+
+        def createModel():
+            input_dim = X.shape[1]
+            model_ = Sequential()
+            model_.add(Dense(64, input_dim=input_dim, activation='relu'))
+            model_.add(Dense(32, activation='relu'))
+            model_.add(Dense(1))
+            model_.compile(optimizer=optimizer, loss=loss)
+            return model_
+        
         # Create the pipeline
         model = Pipeline([
             ('preprocess', preprocessor),
-            ('regressor', KerasRegressor(epochs=epochs, batch_size=batch_size))
+            ('regressor', KerasRegressor(model=createModel, epochs=epochs, batch_size=batch_size))
         ])
         
         # Fit the model
@@ -102,6 +112,8 @@ class MlSandbox:
         print("predictions: ",test_predictions[:5])
         mse = mean_squared_error(y_test, test_predictions)
         print(f"Mean Squared Error: {mse:.2f}")
+
+        # model.named_steps['regressor'].save_weights()
 
     def __createPreprocessor(self):
         categorical_transformer = OneHotEncoder()
@@ -120,28 +132,35 @@ class MlSandbox:
         )
     
 
-class KerasRegressor(BaseEstimator, TransformerMixin):
-    def __init__(self, epochs=10, batch_size=32, optimizer='adam', loss='mean_squared_error', verbose=0):
-        self.epochs = epochs
-        self.batch_size = batch_size
-        self.optimizer = optimizer
-        self.loss = loss
-        self.verbose = verbose
-        self.model_ = None
+# class KerasRegressor(BaseEstimator, TransformerMixin):
+#     def __init__(self, epochs=100, batch_size=32, optimizer='adam', loss='mean_squared_error', verbose=0):
+#         self.epochs = epochs
+#         self.batch_size = batch_size
+#         self.optimizer = optimizer
+#         self.loss = loss
+#         self.verbose = verbose
+#         self.model_ = None
 
-    def fit(self, X, y):
-        input_dim = X.shape[1]
-        self.model_ = Sequential()
-        self.model_.add(Dense(64, input_dim=input_dim, activation='relu'))
-        self.model_.add(Dense(32, activation='relu'))
-        self.model_.add(Dense(1))
-        self.model_.compile(optimizer=self.optimizer, loss=self.loss)
-        self.model_.fit(X, y, epochs=self.epochs, batch_size=self.batch_size, verbose=self.verbose)
-        return self
+#     def fit(self, X, y):
+#         input_dim = X.shape[1]
+#         self.model_ = Sequential()
+#         self.model_.add(Input(shape=(input_dim,)))
+#         self.model_.add(Dense(64, input_dim=input_dim, activation='relu'))
+#         self.model_.add(Dense(32, activation='relu'))
+#         self.model_.add(Dense(1))
+#         self.model_.compile(optimizer=self.optimizer, loss=self.loss)
+#         self.model_.fit(X, y, epochs=self.epochs, batch_size=self.batch_size, verbose=self.verbose)
+#         return self
 
-    def predict(self, X):
-        return self.model_.predict(X)
+#     def predict(self, X):
+#         return self.model_.predict(X)
 
-    def score(self, X, y):
-        return self.model_.evaluate(X, y, verbose=0)
+#     def score(self, X, y):
+#         return self.model_.evaluate(X, y, verbose=0)
     
+#     def save_weights(self):
+#         if self.model_ is not None:
+#             self.model_.save_weights(f"model_{self.file_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.h5")
+#             print(f"Model weights saved to: model_{self.file_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.h5")
+#         else:
+#             print("No model to save. Please train the model first.")
