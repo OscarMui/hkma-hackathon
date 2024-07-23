@@ -10,4 +10,4 @@ sb = MlSandbox("data/housing.csv",
 
 # sb.linearRegression()
 
-sb.neuralNetwork(epochs=300)
+sb.neuralNetwork(epochs=150)

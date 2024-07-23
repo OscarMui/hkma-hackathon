@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import numpy as np
 import pandas as pd
 from sklearn.calibration import LabelEncoder
@@ -12,7 +12,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-from tensorflow.keras.optimizers import Adam
+from keras.models import save_model
 
 from scikeras.wrappers import KerasRegressor
 
@@ -59,10 +59,6 @@ class MlSandbox:
         print(f"bias: {model['regressor'].intercept_}")
         print("")
 
-        # Evaluate the model
-        # score = model.score(X_test, y_test)
-        # print("Test Score:", score)
-
         # check mean squared error
         test_predictions = model.predict(X_test)
         print("y_test: ",y_test[:5])
@@ -102,10 +98,6 @@ class MlSandbox:
         # Fit the model
         model.fit(X_train, y_train)
 
-        # Evaluate the model
-        # score = model.score(X_test, y_test)
-        # print("Test Score:", score)
-
         # check mean squared error
         test_predictions = model.predict(X_test)
         print("y_test: ",y_test[:5])
@@ -113,7 +105,11 @@ class MlSandbox:
         mse = mean_squared_error(y_test, test_predictions)
         print(f"Mean Squared Error: {mse:.2f}")
 
-        # model.named_steps['regressor'].save_weights()
+        # Save the model weights
+        # timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        # save_model(model.named_steps['regressor'],f'model_weights_{timestamp}.keras')
+        # model.named_steps[""]
+        # print("Model weights saved to", f'model_weights_{timestamp}.keras')
 
     def __createPreprocessor(self):
         categorical_transformer = OneHotEncoder()
