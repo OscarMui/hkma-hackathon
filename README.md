@@ -11,11 +11,12 @@ Requires Pip.
 Requires the following packages.
 
 ```
+pip install joblib
 pip install notebook
 pip install numpy
 pip install tensorflow
 pip install pandas
-pip install sklearn
+pip install scikit-learn
 pip install tensorflow
 
 pip install scikeras
