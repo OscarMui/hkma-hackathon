@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.calibration import LabelEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.discriminant_analysis import StandardScaler
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import FunctionTransformer, Pipeline
@@ -29,7 +29,7 @@ class MlSandbox:
         self.objective = objective
         self.objective_type = objective_type
         
-    def linearRegression(self, test_size=0.2, random_state=42):
+    def linearRegression(self, test_size=0.3, random_state=42):
         # Load the data
         df = pd.read_csv(self.file_name)
         
@@ -46,7 +46,7 @@ class MlSandbox:
         # Create the pipeline
         model = Pipeline([
             ('preprocess', preprocessor),
-            ('regressor', LinearRegression())
+            ('regressor', LinearRegression()) if self.objective_type=="regression" else ("regressor",LogisticRegression())
         ])
         
         # Fit the model
@@ -54,10 +54,11 @@ class MlSandbox:
         
         # Print the weights
         print("Regression Weights:")
-        features = model['preprocess'].get_feature_names_out()
-        weights = model['regressor'].coef_
-        for feature, weight in zip(features, weights):
-            print(f"{feature}: {weight}")
+        # features = model['preprocess'].get_feature_names_out()
+        weights = model['regressor'].coef_[0]
+        print(weights)
+        # for feature, weight in zip(features, weights):
+        #     print(f"{feature}: {weight}")
         print(f"bias: {model['regressor'].intercept_}")
         print("")
 
