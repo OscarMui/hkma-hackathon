@@ -29,7 +29,7 @@ class MlSandbox:
         self.objective = objective
         self.objective_type = objective_type
         
-    def linearRegression(self, test_size=0.3, random_state=42):
+    def linearRegression(self, test_size=0.2, random_state=42):
         # Load the data
         df = pd.read_csv(self.file_name)
         
@@ -37,6 +37,7 @@ class MlSandbox:
         X = df[self.numerical + self.numerical_log + self.one_hot + self.boolean]
         y = df[self.objective]
         
+        print(X)
         # Split the data into train and test sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
         
@@ -54,11 +55,11 @@ class MlSandbox:
         
         # Print the weights
         print("Regression Weights:")
-        # features = model['preprocess'].get_feature_names_out()
+        features = X.columns.values
         weights = model['regressor'].coef_[0]
-        print(weights)
-        # for feature, weight in zip(features, weights):
-        #     print(f"{feature}: {weight}")
+        # print(weights)
+        for feature, weight in zip(features, weights):
+            print(f"{feature}: {weight}")
         print(f"bias: {model['regressor'].intercept_}")
         print("")
 
