@@ -29,7 +29,7 @@ class MlSandbox:
         self.objective = objective
         self.objective_type = objective_type
         
-    def linearRegression(self, test_size=0.2, random_state=42):
+    def linearRegression(self, test_size=0.1, random_state=42):
         # Load the data
         df = pd.read_csv(self.file_name)
         
@@ -69,6 +69,8 @@ class MlSandbox:
         print("predictions: ",test_predictions[:5])
         mse = mean_squared_error(y_test, test_predictions)
         print(f"Mean Squared Error: {mse:.2f}")
+
+        return weights
 
     def neuralNetwork(self,epochs=100, batch_size=32, optimizer='adam',loss='mean_squared_error', test_size=0.2, random_state=42):
         # Load the data
