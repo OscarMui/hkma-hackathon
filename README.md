@@ -17,7 +17,7 @@ pip install numpy
 pip install tensorflow
 pip install pandas
 pip install scikit-learn
-pip install tensorflow
+pip install matplotlib
 
 pip install scikeras
 ```
