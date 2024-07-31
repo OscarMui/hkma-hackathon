@@ -15,24 +15,35 @@ sb = MlSandbox("data/07310929.csv",
 base = 4096
 
 #! linear regression
-weights = []
-mses = []
-base = 4096
-for i in range(15):
-    print(f"---- {i} ----")
-    (w,e) = sb.linearRegression(random_state=i+base)
-    weights.append(w)
-    mses.append(e)
+# weights = []
+# mses = []
+# base = 4096
+# for i in range(15):
+#     print(f"---- {i} ----")
+#     (w,e) = sb.linearRegression(random_state=i+base)
+#     weights.append(w)
+#     mses.append(e)
 
 
-average_weights = np.mean(weights, axis=0)
+# average_weights = np.mean(weights, axis=0)
 
-print("---- final ----")
-for feature, weight in zip(numerical+numerical_log, average_weights):
-            print(f"{feature}: {weight}")
+# print("---- final ----")
+# for feature, weight in zip(numerical+numerical_log, average_weights):
+#             print(f"{feature}: {weight}")
 
-print(f"Average error: {sum(mses)/len(mses)}")
+# print(f"Average error: {sum(mses)/len(mses)}")
+
 
 #! NN
 # for i in range(5):
 #     sb.neuralNetwork(epochs=150)
+
+#! SVM
+accuracies = []
+
+for i in range(10):
+    accuracy = sb.svm(random_state=308+i)  # Changing the random state to vary the splits
+    accuracies.append(accuracy)
+
+average_accuracy = sum(accuracies) / len(accuracies)
+print(f"Average Accuracy over 10 runs: {average_accuracy:.2f}")

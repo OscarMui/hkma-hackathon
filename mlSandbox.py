@@ -6,6 +6,8 @@ import pandas as pd
 from sklearn.calibration import LabelEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.discriminant_analysis import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
@@ -135,36 +137,38 @@ class MlSandbox:
             ]
         )
     
+    def svm(self, test_size=0.25, random_state=42):
+        # Load the data
+        df = pd.read_csv(self.file_name)
+        
+        # Preprocess the data
+        X = df[self.numerical + self.numerical_log + self.one_hot + self.boolean]
+        y = df[self.objective]
+        
+        print(X)
+        # Split the data into train and test sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+        
+        # Define the preprocessing steps
+        preprocessor = self.__createPreprocessor()
 
-# class KerasRegressor(BaseEstimator, TransformerMixin):
-#     def __init__(self, epochs=100, batch_size=32, optimizer='adam', loss='mean_squared_error', verbose=0):
-#         self.epochs = epochs
-#         self.batch_size = batch_size
-#         self.optimizer = optimizer
-#         self.loss = loss
-#         self.verbose = verbose
-#         self.model_ = None
+        # Create the pipeline
+        model = Pipeline([
+            ('preprocess', preprocessor),
+            ('classifier', SVC())
+        ])
+        
+        # Fit the model
+        model.fit(X_train, y_train)
+        
+        # Print the support vectors
+        # print("Number of support vectors for each class:")
+        # print(model['classifier'].n_support_)
+        # print("Support vectors:")
+        # print(model['classifier'].support_vectors_)
 
-#     def fit(self, X, y):
-#         input_dim = X.shape[1]
-#         self.model_ = Sequential()
-#         self.model_.add(Input(shape=(input_dim,)))
-#         self.model_.add(Dense(64, input_dim=input_dim, activation='relu'))
-#         self.model_.add(Dense(32, activation='relu'))
-#         self.model_.add(Dense(1))
-#         self.model_.compile(optimizer=self.optimizer, loss=self.loss)
-#         self.model_.fit(X, y, epochs=self.epochs, batch_size=self.batch_size, verbose=self.verbose)
-#         return self
-
-#     def predict(self, X):
-#         return self.model_.predict(X)
-
-#     def score(self, X, y):
-#         return self.model_.evaluate(X, y, verbose=0)
-    
-#     def save_weights(self):
-#         if self.model_ is not None:
-#             self.model_.save_weights(f"model_{self.file_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.h5")
-#             print(f"Model weights saved to: model_{self.file_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.h5")
-#         else:
-#             print("No model to save. Please train the model first.")
+        # Check accuracy
+        test_predictions = model.predict(X_test)
+        accuracy = accuracy_score(y_test, test_predictions)
+        print(f"Accuracy: {accuracy:.2f}")
+        return accuracy
