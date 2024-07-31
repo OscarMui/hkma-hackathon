@@ -39,7 +39,7 @@ class MlSandbox:
         X = df[self.numerical + self.numerical_log + self.one_hot + self.boolean]
         y = df[self.objective]
         
-        print(X)
+        # print(X)
         # Split the data into train and test sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
         
@@ -56,21 +56,21 @@ class MlSandbox:
         model.fit(X_train, y_train)
         
         # Print the weights
-        print("Regression Weights:")
+        # print("Regression Weights:")
         features = X.columns.values
         weights = model['regressor'].coef_[0]
         # print(weights)
-        for feature, weight in zip(features, weights):
-            print(f"{feature}: {weight}")
-        print(f"bias: {model['regressor'].intercept_}")
-        print("")
+        # for feature, weight in zip(features, weights):
+        #     print(f"{feature}: {weight}")
+        # print(f"bias: {model['regressor'].intercept_}")
+        # print("")
 
         # check mean squared error
         test_predictions = model.predict(X_test)
-        print("y_test: ",y_test[:5])
-        print("predictions: ",test_predictions[:5])
+        # print("y_test: ",y_test[:5])
+        # print("predictions: ",test_predictions[:5])
         mse = mean_squared_error(y_test, test_predictions)
-        print(f"Mean Squared Error: {mse:.2f}")
+        # print(f"Mean Squared Error: {mse:.2f}")
 
         return (weights, model['regressor'].intercept_, mse)
 
@@ -145,7 +145,7 @@ class MlSandbox:
         X = df[self.numerical + self.numerical_log + self.one_hot + self.boolean]
         y = df[self.objective]
         
-        print(X)
+        # print(X)
         # Split the data into train and test sets
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
         
@@ -170,5 +170,5 @@ class MlSandbox:
         # Check accuracy
         test_predictions = model.predict(X_test)
         accuracy = accuracy_score(y_test, test_predictions)
-        print(f"Accuracy: {accuracy:.2f}")
+        # print(f"Accuracy: {accuracy:.2f}")
         return accuracy
