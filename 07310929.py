@@ -27,7 +27,7 @@ for i in range(15):
     biases.append(b)
 
 
-# average_weights = np.mean(weights, axis=0)
+average_weights = np.mean(weights, axis=0)
 
 print("---- final ----")
 for feature, weight in zip(numerical+numerical_log, average_weights):
@@ -54,11 +54,11 @@ plt.show()
 #     sb.neuralNetwork(epochs=150)
 
 #! SVM
-accuracies = []
+# accuracies = []
 
-for i in range(10):
-    accuracy = sb.svm(random_state=308+i)  # Changing the random state to vary the splits
-    accuracies.append(accuracy)
+# for i in range(10):
+#     accuracy = sb.svm(random_state=308+i)  # Changing the random state to vary the splits
+#     accuracies.append(accuracy)
 
-average_accuracy = sum(accuracies) / len(accuracies)
-print(f"Average Accuracy over 10 runs: {average_accuracy:.2f}")
+# average_accuracy = sum(accuracies) / len(accuracies)
+# print(f"Average Accuracy over 10 runs: {average_accuracy:.2f}")
