@@ -1,6 +1,6 @@
-# ML Sandbox
+# HKMA ML Hackathon
 
-Sandbox for Machine Learning testing
+Code for HKMA hackathon themed Harnessing Open and Alternative Data for Next-Gen Analytics in HKMA.
 
 ## Installation
 
