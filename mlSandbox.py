@@ -91,7 +91,10 @@ class MlSandbox:
             model_ = Sequential()
             model_.add(Dense(64, input_dim=input_dim, activation='relu'))
             model_.add(Dense(32, activation='relu'))
-            model_.add(Dense(1))
+            if self.objective_type == "regression":
+                model_.add(Dense(1))
+            else:
+                model_.add(Dense(1, activation='sigmoid'))
             model_.compile(optimizer=optimizer, loss=loss)
             return model_
         
