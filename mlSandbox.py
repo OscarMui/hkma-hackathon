@@ -70,7 +70,7 @@ class MlSandbox:
         mse = mean_squared_error(y_test, test_predictions)
         print(f"Mean Squared Error: {mse:.2f}")
 
-        return weights
+        return (weights, mse)
 
     def neuralNetwork(self,epochs=100, batch_size=32, optimizer='adam',loss='mean_squared_error', test_size=0.2, random_state=42):
         # Load the data

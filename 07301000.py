@@ -12,9 +12,12 @@ sb = MlSandbox("data/07301000.csv",
                objective_type="classification")
 
 weights = []
-for i in range(10):
+mses = []
+for i in range(15):
     print(f"---- {i} ----")
-    weights.append(sb.linearRegression(random_state=i))
+    (w,e) = sb.linearRegression(random_state=i)
+    weights.append(w)
+    mses.append(e)
 
 
 average_weights = np.mean(weights, axis=0)
@@ -23,4 +26,5 @@ print("---- final ----")
 for feature, weight in zip(numerical+numerical_log, average_weights):
             print(f"{feature}: {weight}")
 
+print(f"Average error: {sum(mses)/len(mses)}")
 # sb.neuralNetwork(epochs=150)
