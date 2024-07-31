@@ -11,11 +11,15 @@ sb = MlSandbox("data/07310929.csv",
                objective="isPenalty", 
                objective_type="classification")
 
+base = 4096
+
+#! linear regression
 weights = []
 mses = []
+base = 4096
 for i in range(15):
     print(f"---- {i} ----")
-    (w,e) = sb.linearRegression(random_state=i)
+    (w,e) = sb.linearRegression(random_state=i+base)
     weights.append(w)
     mses.append(e)
 
@@ -28,5 +32,6 @@ for feature, weight in zip(numerical+numerical_log, average_weights):
 
 print(f"Average error: {sum(mses)/len(mses)}")
 
+#! NN
 # for i in range(5):
 #     sb.neuralNetwork(epochs=150)
