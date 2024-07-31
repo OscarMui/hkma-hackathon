@@ -1,5 +1,6 @@
 import numpy as np
 from mlSandbox import MlSandbox
+import matplotlib.pyplot as plt
 
 numerical = ["establishmentYear","longitude","latitude","prev_percent_asset_capital","percent_asset_capital"]
 numerical_log = ["adj_assetsPrevMillion","adj_assetsMillion","adj_liabilitiesPrevMillion","adj_liabilitiesMillion","adj_incomePrevMillion","adj_incomeMillion","adj_expensesPrevMillion","adj_expensesMillion"]
